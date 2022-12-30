@@ -1,4 +1,5 @@
-# SDL_inprint
+# SDL_BMPF
+## SDL Bitmap Font
 
 Add simplest text output to your SDL program. Inline font included. Font collection included.
 
@@ -16,54 +17,44 @@ everything, use [SDL_ttf][ttf] instead.
  [sfont]: http://www.linux-games.com/sfont/
  [ttf]: http://www.libsdl.org/projects/SDL_ttf/
 
-## how to use
+## Fork notes
+This is an edit of the [original code](https://github.com/driedfruit/SDL_inprint). I've removed excess stuff I didn't need and cleaned up the code.
+Extra features like line wrapping and text centering is included. Possible bugs too.
 
-Build `inprint.c` with your project. Bundle `inline_font.h`. 
-Include `SDL_inprint.h`.
+## How to use
+
+Build `BMPF.c` with your project.
+Include `BMPF.h`.
 
 Now, you can:
 
 ```c
-    screen = SDL_SetVideoMode(width, height, bpp, flags);
+    SDL_Surface* bmpSurface = SDL_LoadBMP("fonts/zap-light16.bmp");
+    SDL_Texture* bmpTexture = SDL_CreateTextureFromSurface(renderer, bmpSurface);
+    BMPF_initalise(bmpTexture);
+    SDL_FreeSurface(bmpSurface);
 
-    prepare_inline_font();
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    BMPF_print(renderer, "Hello world!", 100, 50);
 
-    incolor(0xFF0000, 0x333333);
-    inprint(screen, "Hello World!", 10, 10);
-
-    kill_inline_font();
+    BMPF_kill();
 ```
 
-The whole demo is in 'example.c'.
-
-You can also do something like
-
-```c
-    infont(SDL_LoadBMP("fontfile.bmp")); //use bitmap font
-```
-
-and
-
-```c
-    infont(NULL); //revert to inline font
-```
+The whole demo is in 'main.c'.
 
 You would also probably want to automate the inlining into the build process,
 which shouldn't be hard. See 'Makefile' for an example.
 
-## SDL2
-
-SDL2 version also exists, with a slightly different API. See `SDL2_inprint.h`,
-`inprint2.c` and `example2.c`. 
-
-## font collection
+## Font collection
 
 All the fonts in the 'fonts/' directory are free (or should be free, correct me
 when I'm wrong) and adhere to the convention described below. Feel free to add
 your fonts or make old ones prettier (it's actually quite fun to work on bitmap
 fonts even if you're not that good at graphics). 
 
-## bitmap fonts
+A possible exception to this is `zap-light16.bmp` from [The ZAP Group](https://www.zap.org.au/projects/console-fonts-zap/).
+
+## Bitmap fonts
 
  * First half of ASCII table (128 symbols).
  * Formatted as 16 x 8 table.
@@ -71,7 +62,7 @@ fonts even if you're not that good at graphics).
  * Color 1 is foreground.
  * One Bit Per Pixel. 1BPP. *Bit*map.
 
-## inline fonts
+## Inline fonts
 
 Inline fonts are in [XBM format][xbm].
 
