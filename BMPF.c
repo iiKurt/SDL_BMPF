@@ -21,7 +21,7 @@ void BMPF_initalise(SDL_Texture* font)
 	selectedFontHeight = h;
 }
 
-void BMPF_kill() {
+void BMPF_kill(void) {
 	SDL_DestroyTexture(selectedFont);
 	selectedFont = NULL;
 }
